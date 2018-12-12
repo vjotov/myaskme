@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Objects;
@@ -20,6 +21,13 @@ public class User implements UserDetails {
     @NotBlank(message = "Password cannot be empty")
     private String password;
 
+    private boolean active;
+
+    @Email(message = "Email is not correct")
+    @NotBlank(message = "Email cannot be empty")
+    private String email;
+    private String activationCode;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name="user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -28,7 +36,7 @@ public class User implements UserDetails {
     public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,5 +109,27 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public boolean isActive() {
+        return active;
+    }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
 }
