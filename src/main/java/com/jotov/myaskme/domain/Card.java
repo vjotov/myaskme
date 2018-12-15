@@ -18,4 +18,10 @@ public class Card {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="receiver_id")
     private User receiver;
+
+    public Card(String question, User author, User receiver) {
+        this.question = question;
+        this.author = author;
+        this.receiver = receiver;
+    }
 }
