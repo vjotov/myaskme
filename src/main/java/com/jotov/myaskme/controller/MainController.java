@@ -2,9 +2,14 @@ package com.jotov.myaskme.controller;
 
 import com.jotov.myaskme.domain.Card;
 import com.jotov.myaskme.domain.User;
+import com.jotov.myaskme.domain.dto.CardDto;
 import com.jotov.myaskme.repos.UserRepo;
 import com.jotov.myaskme.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +28,12 @@ public class MainController {
 
     @GetMapping("/")
     public  String getMain(
-            @AuthenticationPrincipal User user) {
-        if(user != null){
+            @AuthenticationPrincipal User currentUser,
+            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 10) Pageable pageable,
+            Model model
+    ) {
+        if(currentUser != null){
+            loadCards(pageable, model, currentUser,null);
             return "main";
         }
 
@@ -33,19 +42,32 @@ public class MainController {
 
     @PostMapping("/ask")
     public String ask(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal User currentUser,
             @RequestParam String question,
-            @RequestParam(value = "1") Long receiver_id,
+            @RequestParam(defaultValue = "1") Long receiver_id,
+            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 10) Pageable pageable,
             Model model
     ) {
         //TODO: move this ro UserService
-        User receiver = userRepo.findById(receiver_id).orElse(null);
+
+        User receiver = userRepo.findById(receiver_id).get();
         if (receiver != null){
-            Card card = new Card(question, user, receiver);
+            Card card = new Card(question, currentUser, receiver);
             cardService.save(card);
         } else {
             model.addAttribute("message","Cannot post your question");
         }
+        loadCards(pageable,model, currentUser,null);
         return "main";
+    }
+
+    private void loadCards(Pageable pageable, Model model, User currentUser, User receiver) {
+        Page<CardDto> page ;
+        if (receiver == null) {
+            page = cardService.cardListAll(pageable, currentUser);
+        } else {
+            page = cardService.cardListForUserReceiver(pageable, currentUser, receiver);
+        }
+        model.addAttribute("page", page);
     }
 }
