@@ -4,9 +4,9 @@ import javax.persistence.*;
 
 @Entity
 public class Card {
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
+    private Long id;
 
     private String question;
     private String answer;
@@ -22,6 +22,49 @@ public class Card {
     public Card(String question, User author, User receiver) {
         this.question = question;
         this.author = author;
+        this.receiver = receiver;
+    }
+
+    public Card() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
         this.receiver = receiver;
     }
 }

@@ -33,7 +33,8 @@ public class MainController {
             Model model
     ) {
         if(currentUser != null){
-            loadCards(pageable, model, currentUser,null);
+            loadCards(model, currentUser,null);
+            //loadCards(pageable, model, currentUser,null);
             return "main";
         }
 
@@ -45,7 +46,7 @@ public class MainController {
             @AuthenticationPrincipal User currentUser,
             @RequestParam String question,
             @RequestParam(defaultValue = "1") Long receiver_id,
-            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 10) Pageable pageable,
+            //@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 10) Pageable pageable,
             Model model
     ) {
         //TODO: move this ro UserService
@@ -57,16 +58,19 @@ public class MainController {
         } else {
             model.addAttribute("message","Cannot post your question");
         }
-        loadCards(pageable,model, currentUser,null);
+        loadCards(model, currentUser,null);
         return "main";
     }
 
-    private void loadCards(Pageable pageable, Model model, User currentUser, User receiver) {
-        Page<CardDto> page ;
+    private void loadCards( Model model, User currentUser, User receiver) {
+    //private void loadCards(Pageable pageable, Model model, User currentUser, User receiver) {
+        Iterable<Card> page ;
         if (receiver == null) {
-            page = cardService.cardListAll(pageable, currentUser);
+            page = cardService.cardListAll(currentUser);
+            //page = cardService.cardListAll(pageable, currentUser);
         } else {
-            page = cardService.cardListForUserReceiver(pageable, currentUser, receiver);
+            page = cardService.cardListForUserReceiver(currentUser, receiver);
+            //page = cardService.cardListForUserReceiver(pageable, currentUser, receiver);
         }
         model.addAttribute("page", page);
     }
