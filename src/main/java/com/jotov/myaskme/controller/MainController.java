@@ -5,6 +5,7 @@ import com.jotov.myaskme.domain.User;
 import com.jotov.myaskme.domain.dto.CardDto;
 import com.jotov.myaskme.repos.UserRepo;
 import com.jotov.myaskme.service.CardService;
+import com.jotov.myaskme.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,9 @@ public class MainController {
     CardService cardService;
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private UserService userService;
+
 
     @GetMapping("/")
     public  String getMain(
@@ -31,8 +35,7 @@ public class MainController {
             Model model
     ) {
         if(currentUser != null){
-            loadCards(model, currentUser,null);
-            //loadCards(pageable, model, currentUser,null);
+            model.addAttribute("page", loadCards(currentUser, null));
             return "main";
         }
 
@@ -56,7 +59,7 @@ public class MainController {
         } else {
             model.addAttribute("message","Cannot post your question");
         }
-        loadCards(model, currentUser,null);
+        model.addAttribute("page", loadCards(currentUser, null));
         return "main";
     }
 
@@ -74,20 +77,30 @@ public class MainController {
         } else {
             cardService.saveAnswer(card, answer);
         }
-        loadCards(model, currentUser,null);
+        model.addAttribute("page", loadCards(currentUser, null));
         return "main";
     }
 
-    private void loadCards( Model model, User currentUser, User receiver) {
+    @GetMapping("channel/{userChannel}")
+    public String viewChannel(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User userChannel,
+            Model model
+    ) {
+
+        model.addAttribute("page", loadCards(currentUser, userChannel));
+        model.addAttribute("isCurrentUser", currentUser.equals(userChannel));
+        return "main";
+    }
+
+    private Iterable<Card> loadCards( User currentUser, User receiver) {
     //private void loadCards(Pageable pageable, Model model, User currentUser, User receiver) {
-        Iterable<Card> page ;
         if (receiver == null) {
-            page = cardService.cardListAll(currentUser);
+            return cardService.cardListAll(currentUser);
             //page = cardService.cardListAll(pageable, currentUser);
         } else {
-            page = cardService.cardListForUserReceiver(currentUser, receiver);
+            return cardService.cardListForUserReceiver(currentUser, receiver);
             //page = cardService.cardListForUserReceiver(pageable, currentUser, receiver);
         }
-        model.addAttribute("page", page);
     }
 }

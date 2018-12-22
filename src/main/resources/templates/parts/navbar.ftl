@@ -12,10 +12,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="/">Home</a>
             </li>
-            <!--< #if user??>-->
-            <!--<li class="nav-item">-->
-                <!--<a class="nav-link" href="/main">Messages</a>-->
-            <!--</li>-->
+            <#if user??>
+                <li class="nav-item">
+                    <a class="nav-link" href="/channel/${user.id}">My questions</a>
+                </li>
+            </#if>
             <!--<li class="nav-item">-->
                 <!--<a class="nav-link" href="/user-messages/${currentUserId}">My messages</a>-->
             <!--</li>-->
