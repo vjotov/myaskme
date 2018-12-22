@@ -6,7 +6,7 @@
             <h5 class="card-title">question: ${card.question}</h5>
             <div class="">
                 <span><i>author: ${card.author.username}</i></span><br/>
-                <span>to: ${card.receiver.username}</span><br/>
+                <span>to: <a href="/channel/${card.receiver.id}"> ${card.receiver.username}</a></span><br/>
                 answer: <#if card.answer??>${card.answer}</#if>
             </div>
             <#if card.receiver.id == currentUserId && !card.answer??>

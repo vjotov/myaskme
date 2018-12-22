@@ -46,15 +46,17 @@ public class MainController {
     public String ask(
             @AuthenticationPrincipal User currentUser,
             @RequestParam String question,
-            @RequestParam(defaultValue = "1") Long receiver_id,
+            @RequestParam Long receiver_id,
+            //@RequestParam User reciever,
             //@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 10) Pageable pageable,
             Model model
     ) {
         //TODO: move this ro UserService
 
-        User receiver = userRepo.findById(receiver_id).get();
-        if (receiver != null){
-            Card card = new Card(question, currentUser, receiver);
+        User reciever = userRepo.findById(receiver_id).get();
+
+        if (reciever != null){
+            Card card = new Card(question, currentUser, reciever);
             cardService.save(card);
         } else {
             model.addAttribute("message","Cannot post your question");
@@ -87,7 +89,7 @@ public class MainController {
             @PathVariable User userChannel,
             Model model
     ) {
-
+        model.addAttribute("userChannel", userChannel);
         model.addAttribute("page", loadCards(currentUser, userChannel));
         model.addAttribute("isCurrentUser", currentUser.equals(userChannel));
         return "main";
