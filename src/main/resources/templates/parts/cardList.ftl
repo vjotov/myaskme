@@ -9,11 +9,10 @@
                 <span>to: ${card.receiver.username}</span><br/>
                 answer: <#if card.answer??>${card.answer}</#if>
             </div>
-            <#if card.receiver.id == currentUserId>
+            <#if card.receiver.id == currentUserId && !card.answer??>
                 <div class="">
-                    <form action="answer">
-                        <input type="text" name="answer"  />
-                        <input type="hidden" name="card_id" value="${card.id}">
+                    <form action="answer/${card.id}" method="post">
+                        <input type="text" name="answer_text"  />
                         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                         <button class="btn btn-primary my-2" type="submit">Answer</button>
                     </form>

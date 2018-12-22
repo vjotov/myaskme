@@ -13,9 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -57,6 +55,24 @@ public class MainController {
             cardService.save(card);
         } else {
             model.addAttribute("message","Cannot post your question");
+        }
+        loadCards(model, currentUser,null);
+        return "main";
+    }
+
+    @PostMapping("answer/{card}")
+    public String answer(
+            @AuthenticationPrincipal User currentUser,
+            @RequestParam("answer_text") String answer,
+            @PathVariable Card card,
+            Model model
+    ) {
+        if(!card.getReceiver().equals(currentUser)) {
+            model.addAttribute("message", "You cannot answer to this question");
+        } else if (! card.getAnswer().isEmpty()) {
+            model.addAttribute("message", "You cannot update your answer");
+        } else {
+            cardService.saveAnswer(card, answer);
         }
         loadCards(model, currentUser,null);
         return "main";

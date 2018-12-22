@@ -26,4 +26,9 @@ public class CardService {
     //public Page<Card> cardListForUserReceiver(Pageable pageable, User currentUser, User receiver) {
         return cardRepo.findByReceiver(receiver);
     }
+
+    public void saveAnswer(Card card, String answer) {
+        card.setAnswer(answer);
+        cardRepo.save(card);
+    }
 }
