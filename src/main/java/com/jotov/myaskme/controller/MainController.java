@@ -2,21 +2,20 @@ package com.jotov.myaskme.controller;
 
 import com.jotov.myaskme.domain.Card;
 import com.jotov.myaskme.domain.User;
-import com.jotov.myaskme.domain.dto.CardDto;
 import com.jotov.myaskme.repos.UserRepo;
 import com.jotov.myaskme.service.CardService;
 import com.jotov.myaskme.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController {

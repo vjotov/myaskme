@@ -1,6 +1,8 @@
 package com.jotov.myaskme.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Card {
@@ -19,13 +21,21 @@ public class Card {
     @JoinColumn(name="receiver_id")
     private User receiver;
 
+    @ManyToMany
+    @JoinTable(
+            name = "card_likes",
+            joinColumns = {@JoinColumn(name = "card_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
+    private Set<User> likes = new HashSet<>();
+
+    public Card() {
+    }
+
     public Card(String question, User author, User receiver) {
         this.question = question;
         this.author = author;
         this.receiver = receiver;
-    }
-
-    public Card() {
     }
 
     public Long getId() {
@@ -66,5 +76,13 @@ public class Card {
 
     public void setReceiver(User receiver) {
         this.receiver = receiver;
+    }
+
+    public Set<User> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<User> likes) {
+        this.likes = likes;
     }
 }
