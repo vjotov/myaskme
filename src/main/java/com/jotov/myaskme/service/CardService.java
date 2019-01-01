@@ -17,14 +17,14 @@ public class CardService {
         cardRepo.save(card);
     }
 
-    public Iterable<Card> cardListAll(User currentUser) {
+    public Page<CardDto> cardListAll(Pageable pageable,User currentUser) {
     //public Page<Card> cardListAll(Pageable pageable, User currentUser) {
-        return cardRepo.findAll();
+        return cardRepo.findAll(pageable, currentUser);
     }
 
-    public Iterable<Card> cardListForUserReceiver( User currentUser, User receiver) {
+    public Page<CardDto> cardListForUserReceiver(Pageable pageable, User currentUser, User receiver) {
     //public Page<Card> cardListForUserReceiver(Pageable pageable, User currentUser, User receiver) {
-        return cardRepo.findByReceiver(receiver);
+        return cardRepo.findByReceiver(pageable, currentUser, receiver);
     }
 
     public void saveAnswer(Card card, String answer) {

@@ -2,23 +2,27 @@ package com.jotov.myaskme.controller;
 
 import com.jotov.myaskme.domain.Card;
 import com.jotov.myaskme.domain.User;
+import com.jotov.myaskme.domain.dto.CardDto;
 import com.jotov.myaskme.repos.UserRepo;
 import com.jotov.myaskme.service.CardService;
 import com.jotov.myaskme.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Set;
 
 @Controller
-public class MainController {
+public class CardController {
     @Autowired
     CardService cardService;
     @Autowired
@@ -30,11 +34,15 @@ public class MainController {
     @GetMapping("/")
     public  String getMain(
             @AuthenticationPrincipal User currentUser,
-            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 10) Pageable pageable,
-            Model model
+            Model model,
+            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 10) Pageable pageable
     ) {
+
+
         if(currentUser != null){
-            model.addAttribute("page", loadCards(currentUser, null));
+            Page<CardDto> page = cardService.cardListAll(pageable, currentUser);
+
+            model.addAttribute("page", page);
             return "main";
         }
 
@@ -45,23 +53,19 @@ public class MainController {
     public String ask(
             @AuthenticationPrincipal User currentUser,
             @RequestParam String question,
-            @RequestParam Long receiver_id,
+            @RequestParam User reciever,
             //@RequestParam User reciever,
-            //@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 10) Pageable pageable,
-            Model model
+            Model model,
+            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 10) Pageable pageable
     ) {
-        //TODO: move this ro UserService
-
-        User reciever = userRepo.findById(receiver_id).get();
-
-        if (reciever != null){
+        if( question != null && ! question.equals("")){
             Card card = new Card(question, currentUser, reciever);
             cardService.save(card);
         } else {
-            model.addAttribute("message","Cannot post your question");
+            model.addAttribute("questionError","Question text is mandatory!");
         }
-        model.addAttribute("page", loadCards(currentUser, null));
-        return "main";
+        model.addAttribute("page", loadCards(pageable, currentUser, null));
+        return "redirect:/channel/" + reciever.getId();
     }
 
     @PostMapping("answer/{card}")
@@ -69,7 +73,8 @@ public class MainController {
             @AuthenticationPrincipal User currentUser,
             @RequestParam("answer_text") String answer,
             @PathVariable Card card,
-            Model model
+            Model model,
+            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 10) Pageable pageable
     ) {
         if(!card.getReceiver().equals(currentUser)) {
             model.addAttribute("message", "You cannot answer to this question");
@@ -78,7 +83,7 @@ public class MainController {
         } else {
             cardService.saveAnswer(card, answer);
         }
-        model.addAttribute("page", loadCards(currentUser, null));
+        model.addAttribute("page", loadCards(pageable, currentUser, null));
         return "main";
     }
 
@@ -86,21 +91,48 @@ public class MainController {
     public String viewChannel(
             @AuthenticationPrincipal User currentUser,
             @PathVariable User userChannel,
-            Model model
+            Model model,
+            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 10) Pageable pageable
     ) {
+        Page<CardDto> page = cardService.cardListForUserReceiver(pageable, currentUser,userChannel);
+
         model.addAttribute("userChannel", userChannel);
-        model.addAttribute("page", loadCards(currentUser, userChannel));
+        model.addAttribute("page", page);
         model.addAttribute("isCurrentUser", currentUser.equals(userChannel));
         return "main";
     }
 
-    private Iterable<Card> loadCards( User currentUser, User receiver) {
+    @GetMapping("cards/{card}/like")
+    public String like(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable Card card,
+            RedirectAttributes redirectAttributes,
+            @RequestHeader(required = false) String referer
+    ) {
+        Set<User> likes = card.getLikes();
+
+        if(likes.contains(currentUser)) {
+            likes.remove(currentUser);
+        } else {
+            likes.add(currentUser);
+        }
+
+        UriComponents components = UriComponentsBuilder.fromHttpUrl(referer).build();
+
+        components.getQueryParams()
+                .entrySet()
+                .forEach(pair -> redirectAttributes.addAttribute(pair.getKey(), pair.getValue()));
+
+        return "redirect:" + components.getPath();
+    }
+
+    private Page<CardDto> loadCards(Pageable pageable, User currentUser, User receiver) {
     //private void loadCards(Pageable pageable, Model model, User currentUser, User receiver) {
         if (receiver == null) {
-            return cardService.cardListAll(currentUser);
+            return cardService.cardListAll(pageable, currentUser);
             //page = cardService.cardListAll(pageable, currentUser);
         } else {
-            return cardService.cardListForUserReceiver(currentUser, receiver);
+            return cardService.cardListForUserReceiver(pageable,currentUser, receiver);
             //page = cardService.cardListForUserReceiver(pageable, currentUser, receiver);
         }
     }

@@ -1,21 +1,24 @@
 package com.jotov.myaskme.domain.dto;
 
 
+import com.jotov.myaskme.domain.Card;
 import com.jotov.myaskme.domain.User;
 
 public class CardDto {
     private Long id;
     private String question;
     private String answer;
-    private User author;
     private User receiver;
+    private Long likes;
+    private Boolean meLiked;
 
-    public CardDto(Long id, String question, String answer, User author, User receiver) {
-        this.id = id;
-        this.question = question;
-        this.answer = answer;
-        this.author = author;
-        this.receiver = receiver;
+    public CardDto(Card card, Long likes, Boolean meLiked) {
+        this.id = card.getId();
+        this.question = card.getQuestion();
+        this.answer = card.getAnswer();
+        this.receiver = card.getReceiver();
+        this.likes = likes;
+        this.meLiked = meLiked;
     }
 
     public Long getId() {
@@ -30,10 +33,6 @@ public class CardDto {
         return answer;
     }
 
-    public User getAuthor() {
-        return author;
-    }
-
     public User getReceiver() {
         return receiver;
     }
@@ -42,9 +41,9 @@ public class CardDto {
     public String toString() {
         return "MessageDto{" +
                 "id=" + id +
-                ", author=" + author +
-                //", likes=" + likes +
-                //", meLiked=" + meLiked +
+                ", receiver=" + receiver +
+                ", likes=" + likes +
+                ", meLiked=" + meLiked +
                 '}';
     }
 }
