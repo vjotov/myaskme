@@ -7,18 +7,16 @@
             <div class="card-body">
                 <h5 class="card-title">question: ${card.question}</h5>
                 <div class="row">
-                    <#if card.answer??>${card.answer}</#if>
-                    ${card.meLiked?? 1 }
                 </div>
                 <div class="card-footer text-muted container">
                     <div class="row" >
                         <a href="/channel/${card.receiver.id}"> ${card.receiver.username}</a>
                         <a href="/cards/${card.id}/like">
-                            < #if card.meLiked>
+                            <#if card.meLiked>
                                 <i class="fas fa-heart"></i>
-                            < #else>
+                            <#else>
                                 <i class="far fa-heart"></i>
-                            < /#if>
+                            </#if>
                             ${card.likes}
                         </a>
                     </div>

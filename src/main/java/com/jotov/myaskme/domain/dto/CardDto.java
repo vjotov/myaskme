@@ -37,6 +37,14 @@ public class CardDto {
         return receiver;
     }
 
+    public Long getLikes() {
+        return likes;
+    }
+
+    public Boolean getMeLiked() {
+        return meLiked;
+    }
+
     @Override
     public String toString() {
         return "MessageDto{" +
