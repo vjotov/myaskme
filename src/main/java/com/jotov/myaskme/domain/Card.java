@@ -1,10 +1,13 @@
 package com.jotov.myaskme.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Data
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,53 +39,5 @@ public class Card {
         this.question = question;
         this.author = author;
         this.receiver = receiver;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
-    }
-
-    public Set<User> getLikes() {
-        return likes;
-    }
-
-    public void setLikes(Set<User> likes) {
-        this.likes = likes;
     }
 }

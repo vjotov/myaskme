@@ -2,7 +2,7 @@ package com.jotov.myaskme.controller;
 
 import com.jotov.myaskme.domain.Card;
 import com.jotov.myaskme.domain.User;
-import com.jotov.myaskme.domain.dto.CardDto;
+import com.jotov.myaskme.dto.CardDto;
 import com.jotov.myaskme.repos.UserRepo;
 import com.jotov.myaskme.service.CardService;
 import com.jotov.myaskme.service.UserService;

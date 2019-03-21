@@ -1,7 +1,7 @@
 package com.jotov.myaskme.controller;
 
 import com.jotov.myaskme.domain.User;
-import com.jotov.myaskme.domain.dto.CaptchaResponseDto;
+import com.jotov.myaskme.dto.CaptchaResponseDto;
 import com.jotov.myaskme.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

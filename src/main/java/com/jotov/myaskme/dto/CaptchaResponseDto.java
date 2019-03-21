@@ -1,4 +1,4 @@
-package com.jotov.myaskme.domain.dto;
+package com.jotov.myaskme.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
