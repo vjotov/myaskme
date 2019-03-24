@@ -1,0 +1,38 @@
+Arguments: 
+  D:\portable\nodejs\node-v10.15.1-win-x64\node.exe D:\portable\yarn\bin\yarn.js add vue
+
+PATH: 
+  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;d:\Program Files (x86)\Mitov\Visuino;D:\portable\yarn\bin\;C:\Users\v\AppData\Local\Microsoft\WindowsApps;D:\portable\nodejs\node-v10.15.1-win-x64;C:\Users\v\AppData\Local\Yarn\bin;
+
+Yarn version: 
+  1.13.0
+
+Node version: 
+  10.15.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: D:\_work\git\myaskme\package.json: Unexpected token y in JSON at position 0
+      at JSON.parse (<anonymous>)
+      at D:\portable\yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (D:\portable\yarn\lib\cli.js:304:30)
+      at D:\portable\yarn\lib\cli.js:315:13
+
+npm manifest: 
+  yarn {
+    "name": "MyASKme",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "git@github.com:vjotov/myaskme.git",
+    "author": "Vladimir Jotov",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

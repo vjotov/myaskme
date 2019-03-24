@@ -1,0 +1,33 @@
+{
+  "name": "MyASKme",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:vjotov/myaskme.git",
+  "author": "Vladimir Jotov",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.2.5",
+    "@stomp/stompjs": "^5.2.0",
+    "sockjs-client": "^1.3.0",
+    "vue": "2.6.7",
+    "vue-resource": "^1.5.1",
+    "vue-router": "^3.0.2",
+    "vuetify": "^1.5.1",
+    "vuex": "^3.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.0",
+    "vue-loader": "^15.4.1",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "2.6.7",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.14"
+  }
+}
