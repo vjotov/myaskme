@@ -21,7 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Set;
 
-@Controller
+@RestController
 public class CardController {
     @Autowired
     CardService cardService;
