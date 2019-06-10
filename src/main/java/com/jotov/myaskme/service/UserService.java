@@ -2,6 +2,7 @@ package com.jotov.myaskme.service;
 
 import com.jotov.myaskme.domain.Role;
 import com.jotov.myaskme.domain.User;
+import com.jotov.myaskme.dto.CreateUserDto;
 import com.jotov.myaskme.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,14 +44,17 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public boolean addUser(User user) {
-        if (userRepo.findByUsername(user.getUsername()) != null) {
+    public boolean addUser(CreateUserDto userDto) {
+        if (userRepo.findByUsername(userDto.getUsername()) != null) {
             return false;
         }
+        User user = new User();
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setEmail(userDto.getEmail());
+        user.setUsername(userDto.getUsername());
         userRepo.save(user);
 
         sendMassage(user);
@@ -78,6 +82,7 @@ public class UserService implements UserDetailsService {
         }
 
         user.setActivationCode(null);
+        user.setActive(true);
         userRepo.save(user);
         return true;
     }

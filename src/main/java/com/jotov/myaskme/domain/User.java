@@ -1,7 +1,10 @@
 package com.jotov.myaskme.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,16 +19,21 @@ import java.util.Set;
 @Entity
 @Table(name="usr")
 @Data
+@EqualsAndHashCode(of = { "id" })
+@ToString(of = { "id", "name" })
 public class User implements UserDetails {
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(Views.IdName.class)
     private Long id;
     private String googleid;
-    @NotBlank(message = "Username cannot be empty")
+    //@NotBlank(message = "Username cannot be empty")
+    @JsonView(Views.IdName.class)
     private String username;
     @NotBlank(message = "Password cannot be empty")
     private String password;
 
+    @JsonView(Views.IdName.class)
     private boolean active;
 
     @Email(message = "Email is not correct")
