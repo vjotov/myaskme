@@ -14,19 +14,8 @@ configurations {
 	runtimeClasspath {
 		extendsFrom developmentOnly
 	}
-//	flywayMigration
 }
 
-//flyway {
-//	url = 'jdbc:postgresql://localhost:5432/'
-//	user = 'postgres'
-//	password = 'postgres'
-//	schemas = ['admin']
-////	placeholders = [
-////			'keyABC': 'valueXYZ',
-////			'otherplaceholder': 'value123'
-////	]
-//}
 
 repositories {
 	mavenCentral()
@@ -51,7 +40,7 @@ flyway {
 	url = 'jdbc:postgresql://localhost:5432'
 	user = 'postgres'
 	password = 'postgres'
-	schemas = ['admin']
+	schemas = ['myaskme']
 	placeholders = [
 			'keyABC': 'valueXYZ',
 			'otherplaceholder': 'value123'

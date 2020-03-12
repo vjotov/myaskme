@@ -31,12 +31,12 @@ public class RegistrationController {
 //    @Autowired
 //    private RestTemplate restTemplate;
 
-    @GetMapping("/registration")
+//    @GetMapping("/registration")
     public String registration() {
         return "registration";
     }
 
-    @PostMapping("/registration")
+//    @PostMapping("/registration")
     public String addUser(
             @RequestParam("password2") String passwordConfirm,
             //@RequestParam("g-recaptcha-response") String captchaResponce,
